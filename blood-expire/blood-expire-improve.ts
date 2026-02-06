@@ -46,7 +46,7 @@ const listOfBloodBag2: BloodData2[] = [
 
 
 
-function selectBlood(bloodGroup: string, listOfBloodBag: BloodData2[]): BloodData2[] {
+function selectBlood(bloodGroup: BloodData2['bloodGroup'], listOfBloodBag: BloodData2[]): BloodData2[] {
     const SEVEN_DAYS_IN_MS = 1000*60*60*24*7;
 
     const selectedBlood = listOfBloodBag.filter((bag)=> {
@@ -56,11 +56,9 @@ function selectBlood(bloodGroup: string, listOfBloodBag: BloodData2[]): BloodDat
 
         let diff = new Date(bag.expiryDate).getTime() - new Date(bag.bookingDate).getTime()
         
-        const statusAvailable = bag.status === 'available';
         const expireSoon = diff < SEVEN_DAYS_IN_MS && diff > 0;
-        const correctBloodGroup = bag.bloodGroup === bloodGroup;
 
-        return statusAvailable && expireSoon && correctBloodGroup
+        return expireSoon 
     }).sort((a,b) => new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime())
 
     return selectedBlood;
