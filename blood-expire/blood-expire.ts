@@ -46,7 +46,7 @@ const listOfBloodBag: BloodData[] = [
 
 
 
-function selectBlood(bloodGroup: string, listOfBloodBag: BloodData[]): BloodData[] {
+function selectBlood1(bloodGroup: string, listOfBloodBag: BloodData[]): BloodData[] {
     const SEVEN_DAYS_IN_MS = 1000*60*60*24*7;
 
     const selectedBlood = listOfBloodBag.filter((bag)=> {
@@ -64,4 +64,4 @@ function selectBlood(bloodGroup: string, listOfBloodBag: BloodData[]): BloodData
     return selectedBlood;
 }
 
-console.log(selectBlood('A', listOfBloodBag))
+console.log(selectBlood1('A', listOfBloodBag))
