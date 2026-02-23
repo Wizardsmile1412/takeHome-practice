@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import type { Property } from "../types/property";
 
-interface FilterState {
+export interface FilterState {
     minPrice: number;
     maxPrice: number;
     bedrooms: number | null; // null = "All"
@@ -21,7 +21,7 @@ export function usePropertyFilters(properties: Property[]) {
 
     const filteredProperties = useMemo(() => {
         return properties
-        .filter(p=> p.price >= filters.minPrice && filters.maxPrice)
+        .filter(p=> p.price >= filters.minPrice && p.price <= filters.maxPrice)
         .filter(p => filters.bedrooms ? p.bedrooms === filters.bedrooms : true)
         .filter(p => {
             if (!filters.availableMonth) return true;
