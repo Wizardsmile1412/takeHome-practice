@@ -1,10 +1,11 @@
 import { properties } from './data/generateProperties'
 import PropertyList from './components/PropertyList';
 import Filters from './components/Filters';
+import SortControl from './components/SortControl';
 import { usePropertyFilters } from './hooks/usePropertyFilters';
 
 function App() {
-  const { filteredProperties, filters, setFilters} = usePropertyFilters(properties);
+  const { filteredProperties, filters, setFilters, sortBy, setSortBy} = usePropertyFilters(properties);
 
   return (
     <div className='flex flex-col h-screen bg-gray-100'>
@@ -18,6 +19,7 @@ function App() {
           totalCount={properties.length}
           filteredCount={filteredProperties.length}
         />
+        <SortControl sortBy={sortBy} setSortBy={setSortBy} />
       </div>
       <main className='flex-1 overflow-hidden'>
         <PropertyList properties={filteredProperties}/>

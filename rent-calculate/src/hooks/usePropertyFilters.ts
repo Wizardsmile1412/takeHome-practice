@@ -8,7 +8,7 @@ export interface FilterState {
     availableMonth: string | null; //null = "All", format: "2026-03"
 }
 
-type SortOption = 'price-asc' | 'price-desc' | 'date-asc' | 'date-desc';
+export type SortOption = 'price-asc' | 'price-desc' | 'date-asc' | 'date-desc';
 
 export function usePropertyFilters(properties: Property[]) {
     const [filters, setFilters] = useState<FilterState>({
