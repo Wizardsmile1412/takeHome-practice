@@ -10,13 +10,13 @@ export default function PropertyCard({ property, onClick }: PropertyCardProps) {
     return (
         <div
         onClick={onClick}
-        className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200 cursor-pointer h-full"
+        className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200 cursor-pointer md:flex md:flex-row"
         >
             <img
                 src={property.image}
                 alt={property.title}
                 loading="lazy"
-                className="w-full h-36 object-cover"
+                className="w-full h-36 object-cover md:w-48 md:h-36 md:shrink-0"
             />
             <div className="p-3">
                 <h3 className="font-semibold text-gray-900 text-sm line-clamp-1">{property.title}</h3>

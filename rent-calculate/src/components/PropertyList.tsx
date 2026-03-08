@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { List } from 'react-window';
 import type { RowComponentProps } from 'react-window';
 import type { Property } from '../types/property';
@@ -25,12 +26,25 @@ interface PropertyListProps {
 }
 
 export default function PropertyList({ properties }: PropertyListProps) {
+    const [rowHeight, setRowHeight] = useState(() =>
+        window.matchMedia('(min-width: 768px)').matches ? 160 : 280
+    );
+
+    useEffect(() => {
+        const mq = window.matchMedia('(min-width: 768px)');
+        const handler = (e: MediaQueryListEvent) => {
+            setRowHeight(e.matches ? 160 : 280);
+        };
+        mq.addEventListener('change', handler);
+        return () => mq.removeEventListener('change', handler); // cleanup!
+    }, []);
+
     return (
         <List
             rowComponent={PropertyRow}
             rowProps={{ properties }}
             rowCount={properties.length}
-            rowHeight={280}
+            rowHeight={rowHeight}
             style={{ height: '100%'}}
         />
     );
