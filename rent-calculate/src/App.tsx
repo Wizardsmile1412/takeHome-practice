@@ -4,11 +4,14 @@ import PropertyList from './components/PropertyList';
 import Filters from './components/Filters';
 import SortControl from './components/SortControl';
 import { usePropertyFilters } from './hooks/usePropertyFilters';
+import type { Property } from './types/property';
+import PropertyModal from './components/PropertyModal';
 
 function App() {
   const { filteredProperties, filters, setFilters, sortBy, setSortBy} = usePropertyFilters(properties);
 
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
 
   return (
     <div className='flex flex-col h-screen bg-gray-100'>
@@ -54,11 +57,21 @@ function App() {
           </div>
           
           <div className='flex-1 overflow-hidden'>
-            <PropertyList properties={filteredProperties}/>
+            <PropertyList 
+              properties={filteredProperties}
+              onCardClick={setSelectedProperty}
+            />
           </div>
         </main>
 
       </div>
+
+      {selectedProperty && (
+      <PropertyModal
+        property={selectedProperty}
+        onClose={()=> setSelectedProperty(null)}
+      />
+    )}
     </div>
   )
 }
