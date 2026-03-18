@@ -6,12 +6,14 @@ import SortControl from './components/SortControl';
 import { usePropertyFilters } from './hooks/usePropertyFilters';
 import type { Property } from './types/property';
 import PropertyModal from './components/PropertyModal';
+import Pagination from './components/Pagination';
 
 function App() {
   const { filteredProperties, filters, setFilters, sortBy, setSortBy} = usePropertyFilters(properties);
 
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
+  const [viewMode, setViewMode] = useState<'virtualized' | 'paginated'>('virtualized')
 
   return (
     <div className='flex flex-col h-screen bg-gray-100'>
@@ -54,13 +56,26 @@ function App() {
             </p>
 
             <SortControl sortBy={sortBy} setSortBy={setSortBy} />
+
+            <button onClick={() => setViewMode(v => v ==='virtualized' ? 'paginated' : 'virtualized')}>
+              {viewMode === 'virtualized' ? 'Paginated View' : 'Virtualized List'}
+            </button>
           </div>
           
           <div className='flex-1 overflow-hidden'>
-            <PropertyList 
-              properties={filteredProperties}
-              onCardClick={setSelectedProperty}
-            />
+            {viewMode === 'virtualized' ? (
+              <PropertyList 
+                properties={filteredProperties}
+                onCardClick={setSelectedProperty}
+              />
+            ) : (
+              <Pagination
+                key={sortBy + JSON.stringify(filters)}   // resets when filters/sort change 
+                properties={filteredProperties}
+                onCardClick={setSelectedProperty}
+              />
+            )
+            }
           </div>
         </main>
 
