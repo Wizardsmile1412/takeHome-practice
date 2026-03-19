@@ -4,7 +4,7 @@ A responsive rental property dashboard built with React + TypeScript. Browse, fi
 
 This project was built to practice and learn **react-window** (virtualized list rendering) and **Docker** (containerized deployment with multi-stage builds).
 
-**[Live Demo](https://your-vercel-url.vercel.app)**
+**[Live Demo](https://take-home-practice.vercel.app)**
 
 ---
 
