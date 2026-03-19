@@ -43,6 +43,7 @@ export default function Filters({ filters, setFilters, totalCount, filteredCount
                     <input
                         type="number"
                         placeholder="Min"
+                        aria-label="Minimum price"
                         value={minInput}
                         onChange={e => setMinInput(e.target.value)}
                         onBlur={e => {
@@ -54,6 +55,7 @@ export default function Filters({ filters, setFilters, totalCount, filteredCount
                     <input
                         type="number"
                         placeholder="Max"
+                        aria-label="Maximum price"
                         value={maxInput}
                         onChange={e => setMaxInput(e.target.value)}
                         onBlur={e => {
@@ -72,6 +74,7 @@ export default function Filters({ filters, setFilters, totalCount, filteredCount
                     {[null, 1, 2, 3, 4, 5].map(n => (
                         <button
                             key={n ?? 'all'}
+                            aria-label={n === null ? 'All bedrooms' : `${n === 5 ? '5+' : n} bedrooms`}
                             onClick={()=> setFilters(prev => ({...prev, bedrooms: n}))}
                             className={`px-3 py-1 rounded text-sm border ${
                                 filters.bedrooms === n
@@ -90,6 +93,7 @@ export default function Filters({ filters, setFilters, totalCount, filteredCount
                 <label className='block text-sm font-medium text-gray-700 mb-1'>Available Month</label>
                 <select
                     value={filters.availableMonth ?? ''}
+                    aria-label="Available month"
                     onChange={e => setFilters(prev => ({...prev, availableMonth: e.target.value === '' ? null : e.target.value}))}
                     className='w-full border border-gray-300 rounded px-2 py-1 text-sm'
                 >
