@@ -1,73 +1,74 @@
-# React + TypeScript + Vite
+# Rental Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive rental property dashboard built with React + TypeScript. Browse, filter, and sort 1,000 properties with smooth performance using virtualized rendering.
 
-Currently, two official plugins are available:
+This project was built to practice and learn **react-window** (virtualized list rendering) and **Docker** (containerized deployment with multi-stage builds).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**[Live Demo](https://your-vercel-url.vercel.app)**
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- Filter by price range, bedrooms, and available month
+- Sort by price or available date (ascending/descending)
+- Virtualized list rendering for O(1) performance regardless of dataset size
+- Paginated view as an alternative rendering strategy
+- Property detail modal with keyboard (`Escape`) and backdrop click support
+- Responsive layout — mobile-first with collapsible filter panel
+- Empty state, loading state, and accessible filter controls
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## How to Run Locally
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone <repo-url>
+cd rent-calculate
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+App runs at `http://localhost:5173`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Run with Docker
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+docker build -t rental-dashboard .
+docker run -p 8080:80 rental-dashboard
 ```
+
+App runs at `http://localhost:8080`
+
+The Docker setup uses a **multi-stage build** — Stage 1 builds the app with Node, Stage 2 serves the static output with Nginx. This keeps the final image small by not including Node or source files in production.
+
+---
+
+## Architecture Decisions
+
+**Virtualized list with `react-window`**
+Used `FixedSizeList` to render only the visible rows regardless of dataset size. Scrolling through 1,000 items costs the same as scrolling through 10 — O(1) DOM nodes at any time.
+
+**Centralized filter/sort logic in `usePropertyFilters`**
+All filtering and sorting lives in a single custom hook. Components just consume the output — they don't know how filtering works. This makes the logic independently testable and easy to swap out.
+
+**Debounced price inputs via `onBlur`**
+Price filter only applies when the user leaves the input field, preventing excessive re-renders on every keystroke.
+
+**`useMemo` for filtered results**
+The filtered and sorted property list is memoized — it only recalculates when filters, sort order, or the source data changes.
+
+**Pagination as a Strategy Pattern**
+Both `PropertyList` (virtualized) and `Pagination` accept the same `properties` prop. The `usePropertyFilters` hook doesn't care which renderer is active — only the rendering strategy changes, not the data layer. This demonstrates the Open/Closed Principle.
+
+**Mobile-first responsive layout**
+Filter panel collapses on mobile with an animated slide using `max-h` + `opacity` CSS transitions. On desktop it's always visible as a sidebar.
+
+---
+
+## Trade-offs & What I'd Improve
+
+- **Tests** — with more time I'd add unit tests for `usePropertyFilters` with React Testing Library and cover edge cases like empty datasets and boundary price values
+- **URL-based filter state** — storing filters in query params (`?bedrooms=2&minPrice=10000`) would let users share filtered views via URL
+- **Real data** — the current dataset is generated locally; a real API with server-side filtering and pagination would be needed at scale
+- **Image optimization** — property images are loaded with `loading="lazy"` but a real app would use optimized formats (WebP) and a CDN
