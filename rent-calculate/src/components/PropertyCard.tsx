@@ -10,7 +10,7 @@ export default function PropertyCard({ property, onClick }: PropertyCardProps) {
     return (
         <div
         onClick={onClick}
-        className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200 cursor-pointer md:flex md:flex-row"
+        className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md hover:scale-[1.01] transition-all duration-200 cursor-pointer md:flex md:flex-row"
         >
             <img
                 src={property.image}
