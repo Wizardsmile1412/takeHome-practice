@@ -174,7 +174,70 @@ One `ThemeContext` toggles `data-theme` on `<html>`. CSS variables respond to it
 > Do NOT test controllers directly (e2e covers that) or repositories (that's testing TypeORM itself).
 > 
 
-## 8. Register system (bonus)
+## 8. API Documentation — Swagger
+
+NestJS has built-in Swagger support via `@nestjs/swagger`. It reads your decorators and auto-generates interactive API docs at `/api`.
+
+**What you'll learn:**
+- How to document endpoints with `@ApiOperation`, `@ApiResponse`
+- How to document DTOs with `@ApiProperty`
+- How Swagger UI lets you test endpoints like Postman — but lives inside the app
+
+**Setup in `main.ts`:**
+
+```ts
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
+const config = new DocumentBuilder()
+  .setTitle('Voting App API')
+  .setDescription('Auth + Quotes endpoints')
+  .setVersion('1.0')
+  .addBearerAuth()   // adds Authorization header input in Swagger UI
+  .build();
+
+const document = SwaggerModule.createDocument(app, config);
+SwaggerModule.setup('api', app, document);
+```
+
+**Documenting a DTO:**
+
+```ts
+export class RegisterDto {
+  @ApiProperty({ example: 'bob123', minLength: 3, maxLength: 20 })
+  @IsString()
+  @MinLength(3)
+  username: string;
+
+  @ApiProperty({ example: 'Secret1!', minLength: 8 })
+  @IsString()
+  @MinLength(8)
+  password: string;
+}
+```
+
+**Documenting a controller endpoint:**
+
+```ts
+@ApiOperation({ summary: 'Register a new user' })
+@ApiResponse({ status: 201, description: 'User created and auto-logged in' })
+@ApiResponse({ status: 409, description: 'Username already taken' })
+@Post('register')
+register(@Body() dto: RegisterDto) { ... }
+```
+
+**When to add it:**
+- Install and set up Swagger after **Day 2** (auth endpoints done)
+- Add decorators to quotes endpoints after **Day 3**
+- Takes ~30 min per module — do it right after the module works in Postman
+
+**Install:**
+```bash
+npm install @nestjs/swagger
+```
+
+---
+
+## 9. Register system (bonus)
 
 Register slots into `AuthModule` and reuses `issueTokens()` from login — no duplication.
 
