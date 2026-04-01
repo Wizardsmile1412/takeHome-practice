@@ -6,6 +6,8 @@ import { User } from './entities/user.entity';
 import { Quote } from './entities/quote.entity';
 import { Vote } from './entities/vote.entity';
 import { RefreshToken } from './entities/refresh-token.entity';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { RefreshToken } from './entities/refresh-token.entity';
       entities: [User, Quote, Vote, RefreshToken],
       synchronize: true,
     }),
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
