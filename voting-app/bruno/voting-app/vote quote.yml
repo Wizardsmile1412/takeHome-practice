@@ -1,0 +1,17 @@
+info:
+  name: vote quote
+  type: http
+  seq: 13
+
+http:
+  method: POST
+  url: "{{baseUrl}}/quotes/1/vote"
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoidGVzdHVzZXIiLCJpYXQiOjE3NzUxMjM0NTcsImV4cCI6MTc3NTEyNDM1N30.lLOYChK5ifR9El7KS9TMUAMoxIGRX53_oKWlo8j35i0
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
