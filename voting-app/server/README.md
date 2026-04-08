@@ -95,6 +95,31 @@ server/src/
     └── filters/            ← http-exception.filter.ts
 ```
 
+## API Testing with Bruno
+
+This project uses [Bruno](https://www.usebruno.com/) as the API client for testing endpoints. The collection lives inside the repo at `bruno/voting-app/` and is version-controlled with git.
+
+### Why Bruno over Postman
+
+| | Postman | Bruno |
+|---|---|---|
+| Collection storage | Postman cloud | Plain files on your machine |
+| Git-friendly | No — collections live in Postman's cloud, not your repo | Yes — commit and push with your code |
+| Version history | No | Full git history — see exactly what changed and when |
+| Offline | Limited (requires account) | Fully offline, no account needed |
+| Free | Limited (team features paywalled) | Fully free and open source |
+
+Storing the collection in the repo means anyone who clones the project gets all the API requests ready to use — no importing, no sharing links, no account required.
+
+### Getting started with Bruno
+
+1. Download Bruno at [usebruno.com](https://www.usebruno.com/)
+2. Open Bruno → **Open Collection** → select `bruno/voting-app/`
+3. Create an environment: **Environments** → **Create Environment** → name it `local`
+4. Add a variable: `baseUrl` = `http://localhost:3001`
+5. Set `local` as active
+6. Start the server and run any request
+
 ## Running Tests
 
 ```bash
