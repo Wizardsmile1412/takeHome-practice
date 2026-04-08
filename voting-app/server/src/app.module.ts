@@ -8,6 +8,7 @@ import { Vote } from './entities/vote.entity';
 import { RefreshToken } from './entities/refresh-token.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { QuotesModule } from './quotes/quotes.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     UsersModule,
     AuthModule,
+    QuotesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

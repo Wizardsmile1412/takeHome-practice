@@ -1,0 +1,20 @@
+info:
+  name: update_quote
+  type: http
+  seq: 11
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/quotes/1"
+  body:
+    type: json
+    data: '{ "text": "Updated quote text here." }'
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoidGVzdHVzZXIiLCJpYXQiOjE3NzUxMTUwMDEsImV4cCI6MTc3NTExNTkwMX0.BWmQpJbLjnmsCLqGvtfzekJHWCzr6l7W12WFhM1JWZ4
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

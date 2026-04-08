@@ -1,0 +1,17 @@
+info:
+  name: Delete quote
+  type: http
+  seq: 11
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/quotes/2"
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoidGVzdHVzZXIiLCJpYXQiOjE3NzU2MTM1MjcsImV4cCI6MTc3NTYxNDQyN30.cWEsOhi9zomAoFoZBQW859wX-3fazUF7iuTzL8OONzs
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
