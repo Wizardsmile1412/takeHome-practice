@@ -76,4 +76,33 @@ describe('Auth (e2e)', () => {
         .expect(400);
     });
   });
+
+  describe('POST /auth/refresh', () => {
+    let cookies: string[]; // เก็บ cookie จาก register ไว้ใช้ต่อ
+
+    beforeAll(async () => {
+      // ต้อง register ก่อนเพื่อให้ได้ refresh_token cookie มา
+      const res = await request(httpServer)
+        .post('/auth/register')
+        .send({ username: 'bob', password: 'Secret1!' });
+
+      cookies = res.headers['set-cookie'] as unknown as string[];
+    });
+
+    it('200 - returns new accessToken with valid cookie', async () => {
+      const res = await request(httpServer)
+        .post('/auth/refresh')
+        .set('Cookie', cookies) // ส่ง cookie กลับไปหา server
+        .expect(200);
+
+      expect(res.body).toHaveProperty('accessToken');
+    });
+
+    it('401 - throws when token is invalid', async () => {
+      await request(httpServer)
+        .post('/auth/refresh')
+        .set('Cookie', ['refresh_token=fake-invalid-token']) // ← token ปลอม
+        .expect(401);
+    });
+  });
 });
