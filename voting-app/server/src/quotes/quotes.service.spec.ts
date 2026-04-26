@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { QuotesService } from './quotes.service';
 import { QuotesRespository } from './quotes.repository';
-import { mock } from 'node:test';
 
 const mockQuotesRepo = {
   findAll: jest.fn(),
