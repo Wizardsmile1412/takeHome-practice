@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Server } from 'http';
 import request from 'supertest';
 import cookieParser from 'cookie-parser';
 import { AuthModule } from 'src/auth/auth.module';
@@ -12,6 +13,7 @@ import { RefreshToken } from 'src/entities/refresh-token.entity';
 
 describe('Auth (e2e)', () => {
   let app: INestApplication;
+  let httpServer: Server;
 
   // beforeAll - boots the app ONCE for all tests in this file
   beforeAll(async () => {
@@ -36,6 +38,7 @@ describe('Auth (e2e)', () => {
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
     await app.init();
+    httpServer = app.getHttpServer() as Server;
   });
 
   // afterAll - clean up after all tests finish
@@ -45,12 +48,12 @@ describe('Auth (e2e)', () => {
 
   describe('POST /auth/register', () => {
     it('201 - returns tokens on success', async () => {
-      const res = await request(app.getHttpServer())
+      const res = await request(httpServer)
         .post('/auth/register')
         .send({ username: 'alice', password: 'Secret1!' })
         .expect(201);
 
-      // accessToken อยู่ใน body  
+      // accessToken อยู่ใน body
       expect(res.body).toHaveProperty('accessToken');
 
       // refreshToken อยู่ใน Set-Cookie header
@@ -60,14 +63,14 @@ describe('Auth (e2e)', () => {
 
     it('409 - throws when username is already taken', async () => {
       // alice was already registered in the test above - same in-memory db
-      await request(app.getHttpServer())
+      await request(httpServer)
         .post('/auth/register')
         .send({ username: 'alice', password: 'Secret1!' })
         .expect(409);
     });
 
     it('400 - throws when body is invalid', async () => {
-      await request(app.getHttpServer())
+      await request(httpServer)
         .post('/auth/register')
         .send({ username: 'al' }) // too short, missing password
         .expect(400);
